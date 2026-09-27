@@ -69,8 +69,24 @@
     sel.disabled = !items.length;
   }
   function faction() { var r = document.querySelector('input[name="faction"]:checked'); return r ? r.value : ""; }
-  function onFaction() { var f = faction(); fillSelect($("fRace"), f ? Object.keys(RACES[f]) : [], f ? "Choose race" : "Pick faction"); fillSelect($("fClass"), [], "Pick race"); }
-  function onRace() { var f = faction(), r = $("fRace").value; fillSelect($("fClass"), (f && r) ? RACES[f][r] : [], r ? "Choose class" : "Pick race"); }
+  var UNDECIDED = "Undecided";
+  function factionClasses(f) {
+    var all = {}; Object.keys(RACES[f]).forEach(function (r) { RACES[f][r].forEach(function (c) { all[c] = true; }); });
+    return Object.keys(CLASSES).filter(function (c) { return all[c]; });
+  }
+  function classOptions(f, r) {
+    if (!f || !r) return [];
+    return (r === UNDECIDED ? factionClasses(f) : RACES[f][r]).concat([UNDECIDED]);
+  }
+  function onFaction() { var f = faction(); fillSelect($("fRace"), f ? Object.keys(RACES[f]).concat([UNDECIDED]) : [], f ? "Choose race" : "Pick faction"); fillSelect($("fClass"), [], "Pick race"); }
+  function onRace() { var f = faction(), r = $("fRace").value; fillSelect($("fClass"), classOptions(f, r), r ? "Choose class" : "Pick race"); }
+  function charLabel(p) {
+    var r = p.race === UNDECIDED ? "" : p.race, c = p.cls === UNDECIDED ? "" : p.cls;
+    if (!r && !c) return "Race & class undecided";
+    if (!r) return c + " (race undecided)";
+    if (!c) return r + " (class undecided)";
+    return r + " " + c;
+  }
   $("fHorde").addEventListener("change", onFaction);
   $("fAlliance").addEventListener("change", onFaction);
   $("fRace").addEventListener("change", onRace);
@@ -106,6 +122,11 @@
       var t = el("div", "track"), f = el("div", "fill"); f.style.width = ((cc[c] || 0) / max * 100) + "%"; f.style.background = CLASSES[c]; t.appendChild(f);
       r.appendChild(t); r.appendChild(el("span", "n tab", String(cc[c] || 0))); cb.appendChild(r);
     });
+    if (cc[UNDECIDED]) {
+      var ur = el("div", "bar"); ur.appendChild(el("span", null, UNDECIDED));
+      var ut = el("div", "track"), uf = el("div", "fill"); uf.style.width = (cc[UNDECIDED] / max * 100) + "%"; uf.style.background = "rgba(52,36,15,.35)"; ut.appendChild(uf);
+      ur.appendChild(ut); ur.appendChild(el("span", "n tab", String(cc[UNDECIDED]))); cb.appendChild(ur);
+    }
 
     var rr = $("roles"); rr.innerHTML = "";
     [["Tank", "Tanks"], ["Healer", "Healers"], ["DPS", "DPS"]].forEach(function (x) {
@@ -115,12 +136,12 @@
 
     var rb = $("raceBars"); rb.innerHTML = ""; rb.appendChild(el("div", "lbl", "Races"));
     var rc = {}; list.forEach(function (p) { rc[p.race] = (rc[p.race] || 0) + 1; });
-    var rk = Object.keys(rc).sort(function (a, b) { return rc[b] - rc[a]; });
+    var rk = Object.keys(rc).sort(function (a, b) { return (a === UNDECIDED) - (b === UNDECIDED) || rc[b] - rc[a]; });
     var rmax = Math.max.apply(null, [1].concat(rk.map(function (k) { return rc[k]; })));
     if (!rk.length) rb.appendChild(el("p", "hint", "None yet."));
     rk.forEach(function (r) {
       var row = el("div", "bar"); row.appendChild(el("span", null, r));
-      var t = el("div", "track"), f = el("div", "fill"); f.style.width = (rc[r] / rmax * 100) + "%"; f.style.background = "#9C7A34"; t.appendChild(f);
+      var t = el("div", "track"), f = el("div", "fill"); f.style.width = (rc[r] / rmax * 100) + "%"; f.style.background = r === UNDECIDED ? "rgba(52,36,15,.35)" : "#9C7A34"; t.appendChild(f);
       row.appendChild(t); row.appendChild(el("span", "n tab", String(rc[r]))); rb.appendChild(row);
     });
 
@@ -136,8 +157,8 @@
       var nm = el("div", "name", p.name);
       if (!isExample && myKeys[p.id]) nm.appendChild(el("span", "mine", "you"));
       row.appendChild(nm);
-      var ch = el("div", "char"); var gem = el("span", "gem"); gem.style.background = CLASSES[p.cls] || "#999"; ch.appendChild(gem);
-      var tx = el("div"); tx.appendChild(el("div", null, p.race + " " + p.cls + " · " + p.role)); if (p.note) tx.appendChild(el("div", "sub", p.note));
+      var ch = el("div", "char"); var gem = el("span", "gem"); gem.style.background = CLASSES[p.cls] || "transparent"; ch.appendChild(gem);
+      var tx = el("div"); tx.appendChild(el("div", null, charLabel(p) + " · " + p.role)); if (p.note) tx.appendChild(el("div", "sub", p.note));
       ch.appendChild(tx); row.appendChild(ch);
       var wh = el("div", "where"); wh.appendChild(banner(p.faction)); wh.appendChild(el("span", "srvname", p.server)); row.appendChild(wh);
       var acts = el("div", "acts");
@@ -282,7 +303,7 @@
     var g = grouped(list);
     Object.keys(g).sort(function (a, b) { return g[b].length - g[a].length; }).forEach(function (k) {
       var parts = k.split("|"); lines.push(""); lines.push("__" + parts[0] + " · " + parts[1] + "__ — " + g[k].length);
-      g[k].sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (p) { lines.push("• " + p.name + ": " + p.race + " " + p.cls + " (" + p.role + ")"); });
+      g[k].sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (p) { lines.push("• " + p.name + ": " + charLabel(p) + " · " + p.role); });
     });
     if (!list.length) lines.push("No one has signed yet.");
     lines.push(""); lines.push("Sign up: " + location.origin);

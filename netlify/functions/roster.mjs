@@ -40,8 +40,11 @@ function validate(input) {
   };
   if (!p.name) return { error: "Add your Discord name." };
   if (!RACES[p.faction]) return { error: "Choose Horde or Alliance." };
-  if (!RACES[p.faction][p.race]) return { error: "That race isn't available for your faction." };
-  if (!RACES[p.faction][p.race].includes(p.cls)) return { error: `${p.race} can't be a ${p.cls} in Forever.` };
+  const races = RACES[p.faction];
+  if (p.race !== "Undecided" && !races[p.race]) return { error: "That race isn't available for your faction." };
+  const classes = p.race === "Undecided" ? [...new Set(Object.values(races).flat())] : races[p.race];
+  if (p.cls !== "Undecided" && !classes.includes(p.cls))
+    return { error: p.race === "Undecided" ? `${p.faction} can't play ${p.cls} in Forever.` : `${p.race} can't be a ${p.cls} in Forever.` };
   if (!ROLES.includes(p.role)) return { error: "Choose a main role." };
   if (!SERVER_TYPES.includes(p.server)) return { error: "Choose a server type." };
   return { player: p };
