@@ -1,4 +1,6 @@
 [build]
+  # Files live at the top of the repo; copy the page into its own folder so only it gets published.
+  command = "mkdir -p public && cp index.html app.js public/"
   publish = "public"
   functions = "netlify/functions"
 
