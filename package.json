@@ -1,0 +1,9 @@
+{
+  "name": "wow-forever-roster",
+  "private": true,
+  "type": "module",
+  "description": "Guild sign-up sheet for WoW Forever: who's rolling which race, class, faction and server type.",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.1"
+  }
+}

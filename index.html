@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Sign up with the race, class, faction and server type you plan to play in WoW Forever.">
+<title>Forever Guild Roster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=IM+Fell+English:ital@0;1&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --night:#120d09; --stone:#1d1610; --leather:#271c13; --leather-2:#1a130d;
+  --gold:#D4AF5A; --gold-dim:#8C6C2E; --gold-hi:#F2D48A;
+  --parch:#E9D8AF; --parch-edge:#C3A56E; --parch-deep:#D8C08C; --ink:#34240F; --ink-soft:#6B5230;
+  --blood:#7C1810; --blood-hi:#A3261A; --horde:#8E1B12; --alliance:#1E4C8F;
+  --ok:#2F6B3A; --err:#9B1F14;
+  --display:"Cinzel",Georgia,"Times New Roman",serif;
+  --book:"IM Fell English",Georgia,"Times New Roman",serif;
+  --ui:"Alegreya Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{height:100%}
+body{margin:0;
+  background-color:var(--night);
+  background-image:
+    radial-gradient(ellipse at 50% -10%, rgba(212,175,90,.14), transparent 55%),
+    radial-gradient(ellipse at 50% 120%, rgba(124,24,16,.22), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.012) 0 2px, transparent 2px 6px);
+  color:var(--parch);font-family:var(--ui);font-size:16px;line-height:1.5;
+  padding-inline:16px;padding-block:28px 64px;min-height:100%;
+}
+.wrap{max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim)}
+.lbl{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.tab{font-variant-numeric:tabular-nums lining-nums}
+
+/* Header banner */
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding-block:6px 18px;border-bottom:1px solid var(--gold-dim);position:relative}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:var(--gold-dim);opacity:.45}
+.titleblock{display:flex;flex-direction:column;gap:6px}
+h1{font-weight:900;font-size:clamp(30px,6vw,52px);line-height:1.02;letter-spacing:.03em;
+  background:linear-gradient(180deg,var(--gold-hi) 0%,var(--gold) 55%,var(--gold-dim) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 2px 0 rgba(0,0,0,.35)}
+header p{margin:0;font-family:var(--book);font-size:18px;color:#CBB88E;max-width:58ch}
+.seal{width:112px;height:112px;border-radius:50%;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,var(--blood-hi),var(--blood) 55%,#4a0c07 100%);
+  box-shadow:0 0 0 3px #5e120b,0 0 0 5px var(--gold-dim),0 8px 20px rgba(0,0,0,.6),inset 0 -6px 12px rgba(0,0,0,.35);
+  color:var(--gold-hi);text-align:center}
+.seal .big{font-family:var(--display);font-weight:900;font-size:36px;line-height:1}
+.seal .small{font-family:var(--display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;line-height:1.25;margin-top:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:26px;align-items:start}
+@media (max-width:840px){.grid{grid-template-columns:1fr}}
+
+/* Game-UI frame: the sign-up form */
+.frame{background:linear-gradient(180deg,var(--leather),var(--leather-2));border:2px solid var(--gold-dim);outline:1px solid #000;outline-offset:2px;
+  border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 28px rgba(0,0,0,.55),inset 0 0 0 1px rgba(242,212,138,.08)}
+.frame h2{font-size:20px;color:var(--gold);letter-spacing:.06em;text-align:center;padding-bottom:10px;border-bottom:1px solid rgba(140,108,46,.6)}
+form{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field .lbl{color:var(--gold)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select{font:inherit;font-size:15px;color:var(--parch);background:#110c08;border:1px solid var(--gold-dim);border-radius:3px;padding:9px 10px;width:100%;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+input::placeholder{color:#7d6a4a}
+select:disabled{opacity:.5}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 6px;cursor:pointer;font-family:var(--display);font-weight:700;letter-spacing:.08em;
+  color:#a89470;background:#110c08;border:1px solid #4a3a20;border-radius:3px}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.seg label.h:has(input:checked){background:linear-gradient(180deg,#9a2217,#5c0f09);color:#FFE2B8;border-color:var(--gold)}
+.seg label.a:has(input:checked){background:linear-gradient(180deg,#2b5fae,#12305e);color:#E4EEFF;border-color:var(--gold)}
+.seg label:has(input:focus-visible){outline:2px solid var(--gold-hi);outline-offset:2px}
+.sigil{width:10px;height:10px;transform:rotate(45deg);border:1px solid currentColor;flex:none}
+.hint{font-family:var(--book);font-style:italic;font-size:14px;color:#a8946f;margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+button{font-family:var(--display);font-weight:700;letter-spacing:.08em;font-size:14px;border-radius:4px;padding:10px 18px;cursor:pointer;
+  color:var(--gold-hi);background:linear-gradient(180deg,var(--blood-hi),var(--blood) 60%,#4a0c07);border:1px solid var(--gold);
+  box-shadow:0 0 0 1px #000,inset 0 1px 0 rgba(255,220,160,.25),0 3px 8px rgba(0,0,0,.5);text-shadow:0 1px 0 #000}
+button:hover{filter:brightness(1.15)}
+button:active{transform:translateY(1px)}
+button.plain{background:linear-gradient(180deg,#3a2c1c,#1f170f);color:var(--parch)}
+button.small{font-size:12px;padding:6px 11px}
+.msg{font-size:14px;margin:0;min-height:1.2em;text-align:center}
+.frame .msg.err{color:#FF9C8A} .frame .msg.ok{color:#9DDB9F}
+.readonly{font-family:var(--book);font-size:16px;color:#CBB88E;text-align:center}
+
+/* Parchment sheet */
+.sheet{position:relative;background-color:var(--parch);color:var(--ink);border-radius:4px;padding:26px 24px 30px;
+  background-image:
+    radial-gradient(ellipse at center, rgba(255,248,225,.55) 0%, transparent 60%),
+    radial-gradient(ellipse at 0% 0%, rgba(120,80,30,.28), transparent 35%),
+    radial-gradient(ellipse at 100% 100%, rgba(120,80,30,.3), transparent 38%),
+    radial-gradient(ellipse at 100% 0%, rgba(120,80,30,.18), transparent 30%),
+    radial-gradient(ellipse at 0% 100%, rgba(120,80,30,.2), transparent 30%);
+  box-shadow:inset 0 0 50px rgba(110,70,20,.45),0 14px 30px rgba(0,0,0,.6);
+  display:flex;flex-direction:column;gap:28px;min-width:0}
+.sheet::before,.sheet::after{content:"";position:absolute;top:-7px;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#e6c77a,#7b5b22);box-shadow:0 2px 3px rgba(0,0,0,.6)}
+.sheet::before{left:18px}.sheet::after{right:18px}
+.sheet h2{font-size:22px;font-weight:700;color:var(--ink);letter-spacing:.04em;display:flex;align-items:center;gap:12px}
+.sheet h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ink-soft),transparent)}
+.sheet section{display:flex;flex-direction:column;gap:14px}
+.sheet .hint{color:var(--ink-soft)}
+.sheet .lbl{color:var(--ink-soft)}
+.headrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.headrow h2{flex:1;min-width:200px}
+.example{font-family:var(--book);font-style:italic;font-size:15px;color:var(--blood);text-align:center;border-block:1px dashed rgba(124,24,16,.5);padding-block:6px}
+
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gcell{border:1px solid rgba(52,36,15,.45);border-radius:3px;padding:12px 14px;background:rgba(255,246,220,.35);display:flex;flex-direction:column;gap:6px}
+.gcell.main{border:2px solid var(--gold-dim);background:rgba(255,236,180,.5)}
+.gcell .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gcell .count{font-family:var(--display);font-weight:900;font-size:28px;line-height:1}
+.gcell .srv{font-family:var(--display);font-weight:700;font-size:15px}
+.gcell .who{font-family:var(--book);font-size:15px;color:var(--ink-soft);overflow-wrap:anywhere}
+.banner{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:2px;color:#F6E7C4}
+.banner.h{background:var(--horde)} .banner.a{background:var(--alliance)}
+.note-tag{font-family:var(--book);font-style:italic;font-size:14px}
+.note-tag.main{color:#7a5a12} .note-tag.split{color:var(--blood)}
+.copyrow{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.sheet .msg{text-align:left}
+.sheet .msg.ok{color:var(--ok)} .sheet .msg.err{color:var(--err)}
+textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;color:var(--ink);background:rgba(255,248,225,.6);border:1px solid var(--ink-soft);border-radius:3px;padding:8px}
+
+.spread{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:78px 1fr 22px;align-items:center;gap:10px;font-family:var(--book);font-size:16px}
+.bar .track{height:12px;background:rgba(110,75,30,.2);border:1px solid rgba(52,36,15,.35);border-radius:2px;overflow:hidden}
+.bar .fill{height:100%}
+.bar .n{text-align:right;font-family:var(--display);font-weight:700;font-size:14px}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.role{border:1px solid rgba(52,36,15,.4);background:rgba(255,246,220,.35);border-radius:3px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:0}
+.role .num{font-family:var(--display);font-weight:900;font-size:26px;line-height:1.1}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters select{width:auto;font-size:14px;padding:6px 8px;background:rgba(255,248,225,.6);color:var(--ink);border:1px solid var(--ink-soft);box-shadow:none;font-family:var(--book)}
+.roster{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:28px minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(52,36,15,.4)}
+.row:first-child{border-top:1px dashed rgba(52,36,15,.4)}
+@media (max-width:640px){.row{grid-template-columns:28px 1fr auto}.row .char,.row .where{grid-column:2 / -1}}
+.row .idx{font-family:var(--display);font-weight:700;color:var(--ink-soft);font-size:14px}
+.row .name{font-family:var(--book);font-size:21px;line-height:1.2;overflow-wrap:anywhere}
+.char{display:flex;align-items:center;gap:9px;font-family:var(--book);font-size:17px}
+.char .sub{font-size:14px;color:var(--ink-soft);font-style:italic;overflow-wrap:anywhere}
+.gem{width:13px;height:13px;transform:rotate(45deg);flex:none;border:1px solid rgba(40,25,8,.8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.where{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.where .srvname{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.06em}
+.acts{display:flex;gap:6px;justify-content:flex-end}
+.sheet button.small{font-size:11px}
+
+footer{font-family:var(--book);font-style:italic;font-size:14px;color:#9e8a66;text-align:center}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .4s ease}}
+
+.live{display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--book);font-style:italic;font-size:15px;color:var(--ink-soft)}
+.pulse{width:9px;height:9px;border-radius:50%;background:#3d8a4a;box-shadow:0 0 0 0 rgba(61,138,74,.6)}
+.live.off .pulse{background:var(--blood)}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pulse 2.4s infinite}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,138,74,.55)}70%{box-shadow:0 0 0 8px rgba(61,138,74,0)}100%{box-shadow:0 0 0 0 rgba(61,138,74,0)}}
+.admin{border-top:1px solid rgba(140,108,46,.6);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.admin .lbl{color:var(--gold)}
+.adminrow{display:flex;gap:8px}
+.mine{font-family:var(--display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7a5a12;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="titleblock">
+      <div class="eyebrow">World of Warcraft: Forever · Sign-up sheet</div>
+      <h1>Forever Guild Roster</h1>
+      <p>Put your name to the roll. We can only quest together if we share a server type and a faction.</p>
+    </div>
+    <div class="seal" aria-label="Days until launch">
+      <span class="big tab" id="countdown">–</span>
+      <span class="small" id="countdownLbl">days till<br>Nov 4</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="frame">
+      <h2 id="formTitle">Enlist</h2>
+            <form id="planForm" novalidate>
+        <div class="field">
+          <label class="lbl" for="fName">Discord name</label>
+          <input id="fName" maxlength="40" autocomplete="off" placeholder="e.g. Thrallmaster">
+        </div>
+        <div class="field">
+          <span class="lbl">Faction</span>
+          <div class="seg" role="radiogroup" aria-label="Faction">
+            <label class="h"><input type="radio" name="faction" id="fHorde" value="Horde"><span class="sigil"></span>Horde</label>
+            <label class="a"><input type="radio" name="faction" id="fAlliance" value="Alliance"><span class="sigil"></span>Alliance</label>
+          </div>
+        </div>
+        <div class="pair">
+          <div class="field">
+            <label class="lbl" for="fRace">Race</label>
+            <select id="fRace" disabled><option value="">Pick faction</option></select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="fClass">Class</label>
+            <select id="fClass" disabled><option value="">Pick race</option></select>
+          </div>
+        </div>
+        <div class="pair">
+          <div class="field">
+            <label class="lbl" for="fRole">Main role</label>
+            <select id="fRole"><option>DPS</option><option>Tank</option><option>Healer</option></select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="fRuleset">Server type</label>
+            <select id="fRuleset">
+              <option>Normal</option><option>PvP</option><option>Roleplaying</option><option>Hardcore</option><option>Undecided</option>
+            </select>
+          </div>
+        </div>
+        <p class="hint">Hardcore opens after launch. On PvP you can only make characters for one faction.</p>
+        <div class="field">
+          <label class="lbl" for="fNote">Note (optional)</label>
+          <input id="fNote" maxlength="80" autocomplete="off" placeholder="e.g. alt: Gnome Priest">
+        </div>
+        <div class="btns">
+          <button type="submit" id="saveBtn">Sign the roll</button>
+          <button type="button" class="plain" id="cancelBtn" hidden>Cancel</button>
+        </div>
+        <p class="msg" id="formMsg" aria-live="polite"></p>
+        <p class="hint" style="text-align:center">You can edit or remove your own entry from this device.</p>
+      </form>
+      <div class="admin" id="adminBox" hidden>
+        <label class="lbl" for="adminKey">Officer key</label>
+        <div class="adminrow"><input id="adminKey" type="password" autocomplete="off"><button type="button" class="small plain" id="adminBtn">Unlock</button></div>
+        <p class="msg" id="adminMsg" aria-live="polite"></p>
+      </div>
+    </aside>
+
+    <main class="sheet">
+      <div class="live" id="live" aria-live="polite"><span class="pulse"></span><span id="liveText">Connecting to the roster…</span></div>
+      <div id="exampleNote" class="example" hidden>These are example names. They vanish once the first real adventurer signs.</div>
+
+      <section>
+        <div class="headrow">
+          <h2>Where the Guild Lands</h2>
+        </div>
+        <div class="groups" id="groups"></div>
+        <div class="copyrow">
+          <button type="button" class="small" id="copyBtn">Copy roster for Discord</button>
+          <p class="msg" id="copyMsg" aria-live="polite"></p>
+          <textarea id="copyFallback" rows="6" hidden readonly aria-label="Roster text to copy"></textarea>
+        </div>
+      </section>
+
+      <section>
+        <h2>Party Makeup</h2>
+        <div class="spread">
+          <div class="bars" id="classBars"></div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="roles" id="roles"></div>
+            <div class="bars" id="raceBars"></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="headrow">
+          <h2>The Roll <span class="lbl tab" id="rosterCount"></span></h2>
+          <div class="filters">
+            <select id="filterRuleset" aria-label="Filter by server type"><option value="">All server types</option></select>
+            <select id="filterFaction" aria-label="Filter by faction"><option value="">Both factions</option><option>Horde</option><option>Alliance</option></select>
+          </div>
+        </div>
+        <div class="roster" id="roster"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>Race and class choices follow Blizzard's announced Forever combinations, including the new Skyborne. Forever has no named realms; you choose a server type instead.</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
